@@ -1,8 +1,9 @@
 from flask import Flask, request, jsonify, send_from_directory
 from groq import Groq
+import os
 
 app = Flask(__name__)
-client = Groq(api_key="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")
+client = Groq(api_key=os.environ.get("GROQ_API_KEY", "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"))
 
 SYSTEM_PROMPT = "Sen AI Tibbiy Yoriqchi. Foydalanuvchi qaysi tilda yozsa osha tilda javob ber. Simptomlarni tingla, qaysi shifokor kerakligini ayt. Oxirida: Bu AI maslahati - shifokorga murojaat qiling."
 
@@ -23,4 +24,5 @@ def chat():
     return jsonify({"reply": reply})
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
